@@ -11,17 +11,17 @@ int main(int argc, const char* argv[]) {
     LuaLexer lexer(&input);
     CommonTokenStream tokens(&lexer);
     LuaParser parser(&tokens);
-    LuaParser::ChunkContext* chunk = parser.chunk();
+    LuaParser::ChunkContext* chunks = parser.chunk();
     if (parser.getNumberOfSyntaxErrors() > 0) {
         cout<<"lua file syntax error"<<endl;
         return 0;
     }
     for (auto t : tokens.getTokens()) {
-        cout << "line:" <<t->getLine() << ":";
-        cout << " s:" << t->getStartIndex();
-        cout << "e:" << t->getStopIndex();
-        cout << "   ";
-        cout << t->getText()<<endl;
+        cout<<t->toString()<<endl;
+    }
+    for (int i = 0; i < chunks->children.size(); ++i) {
+        auto child = chunks->children.at(i);
+        cout<<child->toString()<<endl;
     }
     ifs.close();
     return 0;
